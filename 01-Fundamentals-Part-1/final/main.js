@@ -16,4 +16,7 @@ function func()
 //console.log("varvar2 is " + varvar2);
 //console.log("letvar2 is " + letvar2);
 
+let value = prompt(`Enter anything`);
+console.log(value);
+
 func();
