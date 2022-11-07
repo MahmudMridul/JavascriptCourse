@@ -1,12 +1,13 @@
 'use strict'
 
 let secretNumber = Math.trunc(Math.random() * 20) + 1;
-let checkBtn = document.querySelector('.check');
-let againBtn = document.querySelector('.again');
 let inputNumber = 0;
+let checkBtnPressCount = 0;
+
 let score = Number(document.querySelector('.score').textContent);
 let highScore = Number(document.querySelector('.highscore').textContent);
-let checkBtnPressCount = 0;
+let checkBtn = document.querySelector('.check');
+let againBtn = document.querySelector('.again');
 
 console.log(`secret number is ${secretNumber}`);
 
@@ -14,8 +15,9 @@ checkBtn.addEventListener(
     'click', 
     () => {
 
-        inputNumber = Number(document.querySelector('.guess').value);
         ++checkBtnPressCount;
+        inputNumber = Number(document.querySelector('.guess').value);
+        
         console.log(checkBtnPressCount);
 
         if(checkBtnPressCount >= 10) {
