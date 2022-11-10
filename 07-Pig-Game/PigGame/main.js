@@ -20,6 +20,7 @@ const diceElem = document.getElementsByClassName('dice')[0];
 
 const holdBtn = document.getElementsByClassName('btn--hold')[0];
 const rollBtn = document.getElementsByClassName('btn--roll')[0];
+const newBtn = document.getElementsByClassName('btn--new')[0];
 
 const getRandomInt = (min, max) => {
     min = Math.ceil(min);
@@ -105,7 +106,10 @@ const rollDice = ( ) => {
     calculateCurrentScore(diceNo);
 }
 
-
+const startNewGame = ( ) => {
+    
+}
 
 holdBtn.addEventListener('click', updateScoreForHold);
 rollBtn.addEventListener('click', rollDice);
+newBtn.addEventListener('click', startNewGame());
