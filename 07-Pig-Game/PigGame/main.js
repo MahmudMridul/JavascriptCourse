@@ -1,27 +1,19 @@
 'use strict'
 
-let winningScore = 100;
+let winningScore = 10;
 
-winningScore = prompt(`Set winning score: `, 100);
+// winningScore = prompt(`Set winning score: `, 100);
 
-let playerZeroActive = true;
+const NUMBER_OF_PLAYERS = 2;
+let activePlayer = 0;
+let totalScores = [];
+let currScores = [];
 
-let playerZeroCurrScore = 0;
-let playerZeroTotalScore = 0;
-
-let playerOneCurrScore = 0;
-let playerOneTotalScore = 0;
-
-const playerZeroTotalScoreElem = document.getElementById('score--0');
-const playerZeroElem = document.getElementsByClassName('player--0')[0];
-const playerZeroCurrScoreElem = document.getElementById('current--0');
-
-const playerOneElem = document.getElementsByClassName('player--1')[0];
-const playerOneTotalScoreElem = document.getElementById('score--1');
-const playerOneCurrScoreElem = document.getElementById('current--1');
+const playerElem = document.getElementsByClassName('player');
+const currScoresElem = document.getElementsByClassName('current');
+const totalScoresElem = document.getElementsByClassName('score');
 
 const diceElem = document.getElementsByClassName('dice')[0];
-
 const holdBtn = document.getElementsByClassName('btn--hold')[0];
 const rollBtn = document.getElementsByClassName('btn--roll')[0];
 const newBtn = document.getElementsByClassName('btn--new')[0];
@@ -32,90 +24,89 @@ const getRandomInt = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+const setScores = ( ) => {
+    for(let i = 0; i < NUMBER_OF_PLAYERS; ++i) {
+        totalScores.push(0);
+        currScores.push(0);
+    }
+}
+
+const setGame = ( ) => {
+    setScores();
+    resetAllScoresElem();
+    resetAllPlayerStatus();
+    setPlayerAsActive(0);
+}
+
+const setPlayerAsWinner = (playerNumber) => {
+    playerElem[playerNumber].classList.add('player--winner');
+}
+
+const unsetPlayerAsWinner = (playerNumber) => {
+    playerElem[playerNumber].classList.remove('player--winner');
+}
+
 const checkForWinner = ( ) => {
-    let winnerFound = false;
-    if(playerZeroTotalScore + playerZeroCurrScore >= winningScore) {
-        winnerFound = true;
-        playerZeroTotalScore += playerZeroCurrScore;
-
-        playerZeroTotalScoreElem.innerText = playerZeroTotalScore;
-        playerZeroElem.classList.add('player--winner');
-        
-    }
-    else if(playerOneTotalScore + playerOneCurrScore >= winningScore) {
-        winnerFound = true;
-        playerOneTotalScore += playerOneCurrScore;
-
-        playerOneTotalScoreElem.innerText = playerOneTotalScore;
-        playerOneElem.classList.add('player--winner');
-        
-    }
-
-    if(winnerFound) {
+    if(totalScores[activePlayer] + currScores[activePlayer] >= winningScore) {
+        totalScores[activePlayer] += currScores[activePlayer];
+        updateTotalScoreTextContent(activePlayer, totalScores[activePlayer]);
+        setPlayerAsWinner(activePlayer);
         holdBtn.disabled = true;
         rollBtn.disabled = true;
     }
 }
 
-const switchPlayer = ( ) => {
-    if(playerZeroActive) {
-        playerZeroElem.classList.remove('player--active');
-        playerOneElem.classList.add('player--active');
-        playerZeroActive = false;
-    }
-    else {    
-        playerOneElem.classList.remove('player--active');
-        playerZeroElem.classList.add('player--active');
-        playerZeroActive = true;
+const setPlayerAsActive = (playerNumber) => {
+    playerElem[playerNumber].classList.add('player--active');
+}
+
+const setPlayerAsInactive = (playerNumber) => {
+    playerElem[playerNumber].classList.remove('player--active');
+}
+
+const toggleActivePlayer = ( ) => {
+    let nextActivePlayer = (activePlayer + 1) % NUMBER_OF_PLAYERS;
+    setPlayerAsInactive(activePlayer);
+    setPlayerAsActive(nextActivePlayer);
+    activePlayer = nextActivePlayer;
+}
+
+const updateCurrScoreTextContent = (activePlayer, valueToBeSet) => {
+    currScoresElem[activePlayer].children[1].textContent = valueToBeSet;
+}
+
+const updateTotalScoreTextContent = (activePlayer, valueToBeSet) => {
+    totalScoresElem[activePlayer].innerHTML = valueToBeSet;
+}
+
+const resetAllScoresElem = ( ) => {
+    for(let p = 0; p < NUMBER_OF_PLAYERS; ++p) {
+        updateCurrScoreTextContent(p, 0);
+        updateTotalScoreTextContent(p, 0);
     }
 }
 
 const updateScoreForHold = ( ) => {
-    if(playerZeroActive) {
-        playerZeroTotalScore += playerZeroCurrScore;
-        playerZeroCurrScore = 0;
-
-        playerZeroTotalScoreElem.innerText = playerZeroTotalScore;
-        playerZeroCurrScoreElem.innerText = playerZeroCurrScore;
-    }
-    else {
-        playerOneTotalScore += playerOneCurrScore;
-        playerOneCurrScore = 0;
-
-        playerOneTotalScoreElem.innerText = playerOneTotalScore;
-        playerOneCurrScoreElem.innerText = playerOneCurrScore;
-    }
-    switchPlayer();
+    totalScores[activePlayer] += currScores[activePlayer];
+    currScores[activePlayer] = 0;
+    updateCurrScoreTextContent(activePlayer, currScores[activePlayer]);
+    updateTotalScoreTextContent(activePlayer, totalScores[activePlayer]);
+    toggleActivePlayer();
 }
 
 const updateScoreForDiceOne = ( ) => {
-    if(playerZeroActive) {
-        playerZeroCurrScore = 0;
-        playerZeroCurrScoreElem.innerText = playerZeroCurrScore;
-    }
-    else {
-        playerOneCurrScore = 0;
-        playerOneCurrScoreElem.innerText = playerOneCurrScore;    
-    }
+    currScores[activePlayer] = 0;
+    updateCurrScoreTextContent(activePlayer, currScores[activePlayer]);
 }
 
 const calculateCurrentScore = (diceNo) => {
-
     if(diceNo === 1) {
         updateScoreForDiceOne();
-        switchPlayer();
+        toggleActivePlayer();
         return;
     }
-
-    if(playerZeroActive) {
-        playerZeroCurrScore += diceNo;
-        playerZeroCurrScoreElem.innerText = playerZeroCurrScore;
-    }
-    else {
-        playerOneCurrScore += diceNo;
-        playerOneCurrScoreElem.innerText = playerOneCurrScore;
-    }
-
+    currScores[activePlayer] += diceNo;
+    updateCurrScoreTextContent(activePlayer, currScores[activePlayer]);
     checkForWinner();
 }
 
@@ -126,28 +117,24 @@ const rollDice = ( ) => {
     calculateCurrentScore(diceNo);
 }
 
+const resetAllPlayerStatus = ( ) => {
+    for(let p = 0; p < NUMBER_OF_PLAYERS; ++p) {
+        unsetPlayerAsWinner(p);
+        setPlayerAsInactive(p);
+    }
+}
+
 const startNewGame = ( ) => {
     winningScore = prompt(`Set winning score: `, 100);
 
-    playerZeroActive = true;
-    playerZeroCurrScore = 0;
-    playerZeroTotalScore = 0;
-    playerOneCurrScore = 0;
-    playerOneTotalScore = 0;
-
-    playerZeroCurrScoreElem.innerText = '0';
-    playerZeroTotalScoreElem.innerText = '0';
-    playerOneCurrScoreElem.innerText = '0';
-    playerOneTotalScoreElem.innerText = '0';
-
-    playerOneElem.classList.remove('player--active');
-    playerZeroElem.classList.add('player--active');
-    playerOneElem.classList.remove('player--winner');
-    playerZeroElem.classList.remove('player--winner');
+    activePlayer = 0;
+    setGame();
 
     holdBtn.disabled = false;
     rollBtn.disabled = false;
 }
+
+setGame();
 
 holdBtn.addEventListener('click', updateScoreForHold);
 rollBtn.addEventListener('click', rollDice);
