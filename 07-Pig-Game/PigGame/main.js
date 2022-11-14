@@ -24,18 +24,12 @@ const getRandomInt = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-const setScores = ( ) => {
-    for(let i = 0; i < NUMBER_OF_PLAYERS; ++i) {
-        totalScores.push(0);
-        currScores.push(0);
-    }
+const updateCurrScoreTextContent = (activePlayer, valueToBeSet) => {
+    currScoresElem[activePlayer].children[1].textContent = valueToBeSet;
 }
 
-const setGame = ( ) => {
-    setScores();
-    resetAllScoresElem();
-    resetAllPlayerStatus();
-    setPlayerAsActive(0);
+const updateTotalScoreTextContent = (activePlayer, valueToBeSet) => {
+    totalScoresElem[activePlayer].innerHTML = valueToBeSet;
 }
 
 const setPlayerAsWinner = (playerNumber) => {
@@ -44,6 +38,42 @@ const setPlayerAsWinner = (playerNumber) => {
 
 const unsetPlayerAsWinner = (playerNumber) => {
     playerElem[playerNumber].classList.remove('player--winner');
+}
+
+const setPlayerAsActive = (playerNumber) => {
+    playerElem[playerNumber].classList.add('player--active');
+}
+
+const setPlayerAsInactive = (playerNumber) => {
+    playerElem[playerNumber].classList.remove('player--active');
+}
+
+const setScores = ( ) => {
+    for(let i = 0; i < NUMBER_OF_PLAYERS; ++i) {
+        totalScores.push(0);
+        currScores.push(0);
+    }
+}
+
+const resetAllScoresElem = ( ) => {
+    for(let p = 0; p < NUMBER_OF_PLAYERS; ++p) {
+        updateCurrScoreTextContent(p, 0);
+        updateTotalScoreTextContent(p, 0);
+    }
+}
+
+const resetAllPlayerStatus = ( ) => {
+    for(let p = 0; p < NUMBER_OF_PLAYERS; ++p) {
+        unsetPlayerAsWinner(p);
+        setPlayerAsInactive(p);
+    }
+}
+
+const setGame = ( ) => {
+    setScores();
+    resetAllScoresElem();
+    resetAllPlayerStatus();
+    setPlayerAsActive(0);
 }
 
 const checkForWinner = ( ) => {
@@ -56,34 +86,11 @@ const checkForWinner = ( ) => {
     }
 }
 
-const setPlayerAsActive = (playerNumber) => {
-    playerElem[playerNumber].classList.add('player--active');
-}
-
-const setPlayerAsInactive = (playerNumber) => {
-    playerElem[playerNumber].classList.remove('player--active');
-}
-
 const toggleActivePlayer = ( ) => {
     let nextActivePlayer = (activePlayer + 1) % NUMBER_OF_PLAYERS;
     setPlayerAsInactive(activePlayer);
     setPlayerAsActive(nextActivePlayer);
     activePlayer = nextActivePlayer;
-}
-
-const updateCurrScoreTextContent = (activePlayer, valueToBeSet) => {
-    currScoresElem[activePlayer].children[1].textContent = valueToBeSet;
-}
-
-const updateTotalScoreTextContent = (activePlayer, valueToBeSet) => {
-    totalScoresElem[activePlayer].innerHTML = valueToBeSet;
-}
-
-const resetAllScoresElem = ( ) => {
-    for(let p = 0; p < NUMBER_OF_PLAYERS; ++p) {
-        updateCurrScoreTextContent(p, 0);
-        updateTotalScoreTextContent(p, 0);
-    }
 }
 
 const updateScoreForHold = ( ) => {
@@ -115,13 +122,6 @@ const rollDice = ( ) => {
     let imageSrc = `dice-${diceNo}.png`;
     diceElem.attributes[0].nodeValue = imageSrc;
     calculateCurrentScore(diceNo);
-}
-
-const resetAllPlayerStatus = ( ) => {
-    for(let p = 0; p < NUMBER_OF_PLAYERS; ++p) {
-        unsetPlayerAsWinner(p);
-        setPlayerAsInactive(p);
-    }
 }
 
 const startNewGame = ( ) => {
