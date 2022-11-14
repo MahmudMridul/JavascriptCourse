@@ -1,9 +1,9 @@
 'use strict'
 
-const player = document.getElementsByClassName('player');
-console.log(player[0].classList);
-player[0].classList.add('player-winner');
-console.log(player[0].classList);
+// const player = document.getElementsByClassName('player');
+// console.log(player[0].classList);
+// player[0].classList.add('player-winner');
+// console.log(player[0].classList);
 
 
 

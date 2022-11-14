@@ -2,7 +2,7 @@
 
 let winningScore = 10;
 
-// winningScore = prompt(`Set winning score: `, 100);
+winningScore = prompt(`Set winning score: `, 100);
 
 const NUMBER_OF_PLAYERS = 2;
 let activePlayer = 0;
@@ -48,7 +48,9 @@ const setPlayerAsInactive = (playerNumber) => {
     playerElem[playerNumber].classList.remove('player--active');
 }
 
-const setScores = ( ) => {
+const initializeScoreArrays = ( ) => {
+    totalScores = [];
+    currScores = [];
     for(let i = 0; i < NUMBER_OF_PLAYERS; ++i) {
         totalScores.push(0);
         currScores.push(0);
@@ -70,10 +72,20 @@ const resetAllPlayerStatus = ( ) => {
 }
 
 const setGame = ( ) => {
-    setScores();
+    initializeScoreArrays();
     resetAllScoresElem();
     resetAllPlayerStatus();
     setPlayerAsActive(0);
+}
+
+const startNewGame = ( ) => {
+    winningScore = prompt(`Set winning score: `, 100);
+
+    activePlayer = 0;
+    setGame();
+
+    holdBtn.disabled = false;
+    rollBtn.disabled = false;
 }
 
 const checkForWinner = ( ) => {
@@ -122,16 +134,6 @@ const rollDice = ( ) => {
     let imageSrc = `dice-${diceNo}.png`;
     diceElem.attributes[0].nodeValue = imageSrc;
     calculateCurrentScore(diceNo);
-}
-
-const startNewGame = ( ) => {
-    winningScore = prompt(`Set winning score: `, 100);
-
-    activePlayer = 0;
-    setGame();
-
-    holdBtn.disabled = false;
-    rollBtn.disabled = false;
 }
 
 setGame();
