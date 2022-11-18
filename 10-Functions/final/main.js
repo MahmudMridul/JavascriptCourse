@@ -1,65 +1,71 @@
-'use strict'
+// 'use strict'
 
-const funca = (text) => {
-    console.log(`logging ${text}`);
-}
+// const funca = (text) => {
+//     console.log(`logging ${text}`);
+// }
 
-const funcb = (text, funca) => {
-    console.log(text);
-    funca(text)
-}
+// const funcb = (text, funca) => {
+//     console.log(text);
+//     funca(text)
+// }
 
-funcb(`a random text without meaning`, funca);
+// funcb(`a random text without meaning`, funca);
 
-const saySomething = (something) => {
-    return (otherThing) => {
-        console.log(`${something} and ${otherThing}`);
-    }
-}
+// const saySomething = (something) => {
+//     return (otherThing) => {
+//         console.log(`${something} and ${otherThing}`);
+//     }
+// }
 
-const saying = saySomething(`this function is returning another function`);
-saying(`calling the saved function`);
+// const saying = saySomething(`this function is returning another function`);
+// saying(`calling the saved function`);
 
-saySomething(`returning another function`)(`calling the returned function`);
+// saySomething(`returning another function`)(`calling the returned function`);
 
-let monkey = {
-    hasTail : true,
-    activity : [],
-    beAnimal(someActivity) {
-        this.activity.push(someActivity);
-        console.log(this.activity);
-    }
-};
+// let monkey = {
+//     hasTail : true,
+//     activity : [],
+//     beAnimal(someActivity) {
+//         this.activity.push(someActivity);
+//         console.log(this.activity);
+//     }
+// };
 
-monkey.beAnimal(`jumping`);
-monkey.beAnimal(`running`);
+// monkey.beAnimal(`jumping`);
+// monkey.beAnimal(`running`);
 
-console.log(monkey);
+// console.log(monkey);
 
-let lion = {
-    hasTail : false,
-    activity : []
-}
+// let lion = {
+//     hasTail : false,
+//     activity : []
+// }
 
-let tiger = {
-    isFat : true,
-    activity : [] 
-}
+// let tiger = {
+//     isFat : true,
+//     activity : [] 
+// }
 
-let hippo = {
-    isAlwaysHungry : true,
-    activity : []
-}
+// let hippo = {
+//     isAlwaysHungry : true,
+//     activity : []
+// }
 
-let beingAnimal = monkey.beAnimal;
+// let beingAnimal = monkey.beAnimal;
 
-beingAnimal.call(lion, `hunting`);
-beingAnimal.call(tiger, `being fat`);
+// beingAnimal.call(lion, `hunting`);
+// beingAnimal.call(tiger, `being fat`);
 
-console.log(lion);
-console.log(tiger);
+// console.log(lion);
+// console.log(tiger);
 
-let lionAnimal = beingAnimal.bind(lion);
-lionAnimal(`doing nothing`);
+// let lionAnimal = beingAnimal.bind(lion);
+// lionAnimal(`doing nothing`);
 
-console.log(lion);
+// console.log(lion);
+
+
+// //Immidiately invoked function expression
+// (( ) => {
+//     console.log(`I don't know why they made this`);
+// })();
