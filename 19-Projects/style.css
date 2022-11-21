@@ -1,0 +1,71 @@
+body {
+    font-family: 'Varela Round', sans-serif;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 90vh;
+}
+
+table {
+    grid-column: 1/4;
+    border: 2px dashed dodgerblue;
+    border-collapse: collapse;
+}
+
+.score-side {
+    grid-column: 4/6;
+    margin-left: 50px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(9, 1fr);
+    grid-column-gap: 30px;
+}
+
+td {
+    border: 2px dashed #939597;
+}
+
+.border-left {
+    border-left: 3px solid black;
+}
+
+.border-right {
+    border-right: 3px solid black;
+}
+
+.border-top {
+    border-top: 3px solid black;
+}
+
+.border-bottom {
+    border-bottom: 3px solid black;
+}
+
+.clicked {
+    background-color: #939597;
+}
+
+.is-box-p1 {
+    background-color: cornflowerblue;
+}
+
+.is-box-p2 {
+    background-color: mediumslateblue;
+}
+
+.active-p1 {
+    background-color: cornflowerblue;
+    color: white;
+}
+
+.active-p2 {
+    background-color: mediumslateblue;
+    color: white;
+}
+
+h2 {
+    text-align: center;
+    border-radius: 15px;
+}
