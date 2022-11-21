@@ -11,16 +11,19 @@ const keys = new Map([
     ['ArrowRight', 'border-right'],
 ]);
 
-let active = 0;
-let scores = [0, 0];
+let activePlayer = 0;
+let scores = [30, 10];
 let playerOneName = 'Player One';
 let playerTwoName = 'Player Two';
 let numOfBoxes = 0;
 
+const playerElem = document.getElementsByClassName('player');
 const tableSide = document.getElementsByClassName('container')[0];
 const td = document.getElementsByTagName('td');
-const playerOneNameElem = document.getElementsByClassName('player-one-name')[0];
-const playerTwoNameElem = document.getElementsByClassName('player-two-name')[0];
+const switchBtn = document.getElementsByClassName('switch')[0];
+
+
+console.log(playerElem[0].children[1]);
 
 const createTable = (rows, cols) => {
     numOfRows = rows;
@@ -133,8 +136,8 @@ const setPlayersName = ( ) => {
     playerOneName = prompt(`Enter name of player one:`, playerOneName);
     playerTwoName = prompt(`Enter name of player two:`, playerTwoName);
 
-    playerOneNameElem.innerText = playerOneName;
-    playerTwoNameElem.innerText = playerTwoName;
+    playerElem[0].children[0].innerText = playerOneName;
+    playerElem[1].children[0].innerText = playerTwoName;
 }
 
 const gameSetup = ( ) => {
@@ -144,6 +147,25 @@ const gameSetup = ( ) => {
     addEventToCells();
 }
 
+const updateScore = (playerNo) => {
+    playerElem[playerNo].children[1].innerText = scores[playerNo];
+}
+
+switchBtn.addEventListener(
+    'click',
+    ( ) => {
+        activePlayer = (activePlayer + 1) % 2;
+        
+        if(activePlayer === 0) {
+            playerElem[0].children[0].classList.add('active-p1');
+            playerElem[1].children[0].classList.remove('active-p2');
+        }
+        else if(activePlayer === 1) {
+            playerElem[1].children[0].classList.add('active-p2');
+            playerElem[0].children[0].classList.remove('active-p1');
+        }
+    }
+);
 
 gameSetup();
 
