@@ -1,7 +1,7 @@
 'use strict'
 
-let numOfRows = 7;
-let numOfCols = 7;
+let numOfRows = 3;
+let numOfCols = 3;
 let numOfCells = 0;
 
 const keys = new Map([
@@ -12,18 +12,19 @@ const keys = new Map([
 ]);
 
 let activePlayer = 0;
-let scores = [30, 10];
-let playerOneName = 'Player One';
-let playerTwoName = 'Player Two';
+let scores = [0, 0];
+let playerOneName = 'Nilo';
+let playerTwoName = 'Mridul';
+let firstCharPOne = 'O';
+let firstCharPTwo = 'T';
 let numOfBoxes = 0;
 
 const playerElem = document.getElementsByClassName('player');
 const tableSide = document.getElementsByClassName('container')[0];
 const td = document.getElementsByTagName('td');
 const switchBtn = document.getElementsByClassName('switch')[0];
+const winner = document.getElementsByClassName('winner')[0];
 
-
-console.log(playerElem[0].children[1]);
 
 const createTable = (rows, cols) => {
     numOfRows = rows;
@@ -34,7 +35,7 @@ const createTable = (rows, cols) => {
     for(let r = 0; r < rows; ++r) {
         html += `<tr>`;
         for(let c = 0; c < cols; ++c) {
-            html += `<td> &nbsp ${tdNo} &nbsp </td>`;
+            html += `<td> &nbsp ${tdNo + 1} &nbsp </td>`;
             ++tdNo;
         }
         html += `</tr>`;
@@ -71,10 +72,40 @@ const cellIsABox = (cellNo) => {
 const changeBoxCellColor = ( ) => {
     for(let i = 0; i < numOfCells; ++i) {
         if(cellIsABox(i)) {
-            addClassToCell(i, 'is-box-p2');
+            if(activePlayer === 0 && !cellContainsClass(i, 'is-box-p2')) {
+                addClassToCell(i, 'is-box-p1');
+            }
+            else if(activePlayer === 1 && !cellContainsClass(i, 'is-box-p1')) {
+                addClassToCell(i, 'is-box-p2');
+            }
+            
         }
     }
 } 
+
+const updateScore = ( ) => {
+    let p1Score = 0;
+    let p2Score = 0;
+    numOfBoxes = 0;
+
+    for(let i = 0; i < numOfCells; ++i) {
+        if(cellContainsClass(i, 'is-box-p1')) {
+            p1Score += 5;
+            ++numOfBoxes;
+            td[i].innerText = `${firstCharPOne}`;
+        }
+        else if(cellContainsClass(i, 'is-box-p2')) {
+            p2Score += 5;
+            ++numOfBoxes;
+            td[i].innerText = `${firstCharPTwo}`;
+        }
+    }
+    scores[0] = p1Score;
+    scores[1] = p2Score;
+    updateScoreText(0);
+    updateScoreText(1);
+}
+
 
 const addEventToCells = ( ) => {
     for(let i = 0; i < numOfCells; ++i) {
@@ -132,23 +163,49 @@ const setTableSize = ( ) => {
     }
 }
 
-const setPlayersName = ( ) => {
+const getPlayersName = ( ) => {
     playerOneName = prompt(`Enter name of player one:`, playerOneName);
     playerTwoName = prompt(`Enter name of player two:`, playerTwoName);
+}
 
-    playerElem[0].children[0].innerText = playerOneName;
-    playerElem[1].children[0].innerText = playerTwoName;
+const setPlayersName = ( ) => {
+    playerElem[0].children[0].innerText = `${playerOneName}(${firstCharPOne})`;
+    playerElem[1].children[0].innerText = `${playerTwoName}(${firstCharPTwo})`;
+}
+
+const getFirstChar = ( ) => {
+    for(let i = 0; i < Math.min(playerOneName.length, playerTwoName.length); ++i) {
+        if(playerOneName[i] !== playerTwoName[i]) {
+            firstCharPOne = playerOneName[i].toUpperCase();
+            firstCharPTwo = playerTwoName[i].toUpperCase();
+            break;
+        }
+    }
 }
 
 const gameSetup = ( ) => {
     // setTableSize();
     createTable(numOfRows, numOfCols);
-    // setPlayersName();
+    // getPlayersName();
+    getFirstChar();
+    setPlayersName();
     addEventToCells();
 }
 
-const updateScore = (playerNo) => {
+const updateScoreText = (playerNo) => {
     playerElem[playerNo].children[1].innerText = scores[playerNo];
+}
+
+const decideWinner = ( ) => {
+    if(scores[0] > scores[1]) {
+        winner.innerText = `${playerOneName} wins!!!`;
+    }
+    else if(scores[0] < scores[1]) {
+        winner.innerText = `${playerTwoName} wins!!!`;
+    }
+    else {
+        winner.innerText = `Draw!`;
+    }
 }
 
 switchBtn.addEventListener(
@@ -174,5 +231,10 @@ document.addEventListener(
     (event) => {
         addBorderToCells(event);
         changeBoxCellColor();
+        updateScore()
+        
+        if(numOfBoxes === numOfCells) {
+            decideWinner();
+        }
     }
 );
