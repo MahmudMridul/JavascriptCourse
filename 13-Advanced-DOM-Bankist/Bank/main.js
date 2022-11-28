@@ -19,6 +19,18 @@ const closeModal = ( ) => {
     overlay.classList.add('hidden');
 };
 
+const addCloseModalToDoc = (event) => {
+    if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
+        closeModal();
+    }
+}
+
+const smoothScroll = (event) => {
+    section1.scrollIntoView({
+        behavior: 'smooth'
+    });
+}
+
 btnsOpenModal.forEach(
     (btn) => {
         btn.addEventListener('click', openModal);
@@ -30,11 +42,7 @@ overlay.addEventListener('click', closeModal);
 
 document.addEventListener(
     'keydown',  
-    (event) => {
-        if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
-            closeModal();
-        }
-    }
+    addCloseModalToDoc
 );
 
 ///////////////////////////////////////
@@ -43,31 +51,36 @@ document.addEventListener(
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.querySelector('#section--1');
 
-btnScrollTo.addEventListener(
-    'click', 
-    (event) => {
-        const section1Coordinates = section1.getBoundingClientRect();
 
-        // console.log(section1Coordinates);
-        // console.log(window.pageXOffset, window.pageYOffset);
-        // console.log(document.documentElement.clientHeight, document.documentElement.clientWidth);
 
-        // No animation
-        // window.scrollTo (
-        //     section1Coordinates.left + window.pageXOffset, 
-        //     section1Coordinates.top + window.pageYOffset
-        // );
+btnScrollTo.addEventListener('click', smoothScroll);
 
-        // with animation but not working 🙄
-        // window.scrollTo({
-        //     left : section1Coordinates.left + window.pageXOffset, 
-        //     top : section1Coordinates + window.pageYOffset,
-        //     behavior : 'smooth'
-        // });
+// For future reference
+// btnScrollTo.addEventListener(
+//     'click', 
+//     (event) => {
+//         const section1Coordinates = section1.getBoundingClientRect();
 
-        section1.scrollIntoView({
-            behavior : 'smooth'
-        });
-    }
-);
+//         console.log(section1Coordinates);
+//         console.log(window.pageXOffset, window.pageYOffset);
+//         console.log(document.documentElement.clientHeight, document.documentElement.clientWidth);
+
+//         No animation
+//         window.scrollTo (
+//             section1Coordinates.left + window.pageXOffset, 
+//             section1Coordinates.top + window.pageYOffset
+//         );
+
+//         with animation but not working 🙄
+//         window.scrollTo({
+//             left : section1Coordinates.left + window.pageXOffset, 
+//             top : section1Coordinates + window.pageYOffset,
+//             behavior : 'smooth'
+//         });
+
+//         section1.scrollIntoView({
+//             behavior : 'smooth'
+//         });
+//     }
+// );
 
