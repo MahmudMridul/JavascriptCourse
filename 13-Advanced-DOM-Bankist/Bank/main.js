@@ -71,7 +71,7 @@ btnScrollTo.addEventListener('click', smoothScroll);
 //             section1Coordinates.top + window.pageYOffset
 //         );
 
-//         with animation but not working 🙄
+//         with animation but not working 
 //         window.scrollTo({
 //             left : section1Coordinates.left + window.pageXOffset, 
 //             top : section1Coordinates + window.pageYOffset,
