@@ -84,3 +84,6 @@ btnScrollTo.addEventListener('click', smoothScroll);
 //     }
 // );
 
+//////////////////////////////
+//skipping video 192 - 203
+
