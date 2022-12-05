@@ -54,16 +54,27 @@ request.then(
     }
 );
 
-fetch(`https://restcountries.com/v2/name/${country}`).then(
-    (response) =>  response.json().then(
+// fetch(`https://restcountries.com/v2/name/${country}`).then(
+//     (response) =>  response.json().then(
+//         (data) => {
+//             console.log(data);
+//         }
+//     )
+// );
+
+// fetch(`https://restcountries.com/v2/name/${country}`).then(
+//     (response) => response.json().then(
+//         (data) => renderCountry(data[0])
+//     )
+// );
+
+fetch(`https://restcountries.com/v2/all`).then(
+    (response) => response.json().then(
         (data) => {
-            console.log(data);
+            for(let i = 0; i < data.length; ++i) {
+                let html = `<h4> ${data[i].name} </h4> <br><br>`;
+                countriesContainer.insertAdjacentHTML('beforeend', html);
+            }
         }
     )
-);
-
-fetch(`https://restcountries.com/v2/name/${country}`).then(
-    (response) => response.json().then(
-        (data) => renderCountry(data[0])
-    )
-);
+)
